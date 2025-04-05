@@ -1,4 +1,7 @@
-use bevy::prelude::*;
+use bevy::{
+    ecs::{component::ComponentId, world::DeferredWorld},
+    prelude::*,
+};
 use bevy_trenchbroom::prelude::*;
 
 fn main() {
@@ -42,9 +45,26 @@ fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
     }
 }
 
+const SUZANNE_MODEL: &str = "models/Suzanne.gltf";
+
 #[derive(PointClass, Component, Reflect)]
 #[reflect(Component)]
 #[require(Transform, Visibility)]
 // #[require(TrenchBroomGltfRotationFix(|| TrenchBroomGltfRotationFix))]
-#[model({ "path": "models/Suzanne.gltf", "skin": 0 })]
+#[model({ "path": SUZANNE_MODEL, "skin": 0 })]
+#[component(on_add = Self::on_add)]
 pub struct Suzanne;
+
+impl Suzanne {
+    fn on_add(mut world: DeferredWorld, entity: Entity, _id: ComponentId) {
+        let Some(asset_server) = world.get_resource::<AssetServer>() else {
+            return;
+        };
+        let suzanne = asset_server.load(format!("{SUZANNE_MODEL}#Scene0"));
+
+        world
+            .commands()
+            .entity(entity)
+            .insert((SceneRoot(suzanne), TrenchBroomGltfRotationFix));
+    }
+}

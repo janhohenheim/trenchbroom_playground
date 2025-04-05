@@ -21,4 +21,5 @@
 "origin" "-8 -24 72"
 "model" "models/Suzanne.gltf"
 "visibility" "Inherited"
+"angles" "0 120 0"
 }
