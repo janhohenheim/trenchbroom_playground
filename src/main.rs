@@ -1,14 +1,17 @@
 use avian3d::prelude::*;
 use bevy::{
     ecs::{component::ComponentId, world::DeferredWorld},
+    input::common_conditions::input_just_pressed,
     prelude::*,
 };
 use bevy_trenchbroom::prelude::*;
 use fix_rotation::FixTrenchBroomRotation;
 
-mod fix_rotation;
 #[cfg(debug_assertions)]
-mod trenchbroom_config;
+mod dev;
+#[cfg(debug_assertions)]
+use dev::PrintComponents;
+mod fix_rotation;
 
 fn main() {
     let mut app = App::new();
@@ -23,7 +26,11 @@ fn main() {
 
     #[cfg(debug_assertions)]
     {
-        app.add_plugins(trenchbroom_config::plugin);
+        app.add_plugins(dev::plugin);
+        app.add_systems(
+            Update,
+            print_suzanne_components.run_if(input_just_pressed(KeyCode::Space)),
+        );
     }
 
     app.run();
@@ -73,5 +80,11 @@ impl Suzanne {
             RigidBody::Dynamic,
             ColliderConstructorHierarchy::new(ColliderConstructor::ConvexDecompositionFromMesh),
         ));
+    }
+}
+
+fn print_suzanne_components(mut commands: Commands, q_suzanne: Query<Entity, With<Suzanne>>) {
+    for entity in q_suzanne.iter() {
+        commands.trigger_targets(PrintComponents, entity);
     }
 }
