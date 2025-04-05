@@ -34,7 +34,9 @@ fn main() {
 }
 
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(SceneRoot(asset_server.load("maps/playground.bsp#Scene")));
+    commands.spawn(SceneRoot(
+        asset_server.load("maps/playground/playground.bsp#Scene"),
+    ));
 
     commands.spawn((
         Camera3d::default(),
