@@ -4,7 +4,7 @@ use bevy::{
     input::common_conditions::input_just_pressed,
     prelude::*,
 };
-use bevy_trenchbroom::{class::QuakeClass, prelude::*};
+use bevy_trenchbroom::{bsp::base_classes::BspWorldspawn, class::QuakeClass, prelude::*};
 
 #[cfg(debug_assertions)]
 mod dev;
@@ -34,7 +34,7 @@ fn main() {
 }
 
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(SceneRoot(asset_server.load("maps/playground.map#Scene")));
+    commands.spawn(SceneRoot(asset_server.load("maps/playground.bsp#Scene")));
 
     commands.spawn((
         Camera3d::default(),
@@ -52,6 +52,7 @@ fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 #[derive(SolidClass, Component, Reflect, Default)]
 #[reflect(Component)]
+#[require(BspWorldspawn)]
 #[geometry(GeometryProvider::new().convex_collider().smooth_by_default_angle())]
 pub struct Worldspawn;
 

@@ -10,3 +10,4 @@ assets/**/*.bsp
 assets/**/*.log
 assets/**/*.pts
 assets/**/*.texinfo.json
+assets/**/*.leak.prt
