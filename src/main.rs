@@ -53,7 +53,7 @@ const SUZANNE_MODEL: &str = "models/Suzanne.gltf";
 #[derive(PointClass, Component, Reflect)]
 #[reflect(Component)]
 #[require(Transform, Visibility)]
-#[model({ "path": SUZANNE_MODEL, "skin": 0 })]
+#[model("models/Suzanne.gltf")]
 #[component(on_add = Self::on_add)]
 pub struct Suzanne;
 
