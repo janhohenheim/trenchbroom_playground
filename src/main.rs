@@ -5,15 +5,25 @@ use bevy::{
 };
 use bevy_trenchbroom::prelude::*;
 
+#[cfg(debug_assertions)]
+mod trenchbroom_config;
+
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+    let mut app = App::new();
+
+    app.add_plugins(DefaultPlugins)
         .add_plugins(TrenchBroomPlugin(TrenchBroomConfig::new(
             "trenchbroom_playground",
         )))
         .add_plugins(PhysicsPlugins::default())
-        .add_systems(Startup, (write_trenchbroom_config, spawn_map).chain())
-        .run();
+        .add_systems(Startup, spawn_map);
+
+    #[cfg(debug_assertions)]
+    {
+        app.add_plugins(trenchbroom_config::plugin);
+    }
+
+    app.run();
 }
 
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
@@ -37,15 +47,6 @@ fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
 #[reflect(Component)]
 #[geometry(GeometryProvider::new().convex_collider().smooth_by_default_angle())]
 pub struct Worldspawn;
-
-fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
-    if let Err(err) = server
-        .config
-        .write_folder("../../.TrenchBroom/games/trenchbroom_playground")
-    {
-        error!("Could not write TrenchBroom config: {err}");
-    }
-}
 
 const SUZANNE_MODEL: &str = "models/Suzanne.gltf";
 
