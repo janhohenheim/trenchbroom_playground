@@ -44,7 +44,8 @@ fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
 
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SceneRoot(
-        asset_server.load("maps/playground/playground.bsp#Scene"),
+        //  Run ./scripts/compile_maps.sh and change .map to .bsp when you're done prototyping and want some extra performance
+        asset_server.load("maps/playground/playground.map#Scene"),
     ));
 
     commands.spawn((
