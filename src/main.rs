@@ -1,3 +1,4 @@
+use avian3d::prelude::*;
 use bevy::{
     ecs::{component::ComponentId, world::DeferredWorld},
     prelude::*,
@@ -10,6 +11,7 @@ fn main() {
         .add_plugins(TrenchBroomPlugin(TrenchBroomConfig::new(
             "trenchbroom_playground",
         )))
+        .add_plugins(PhysicsPlugins::default())
         .add_systems(Startup, (write_trenchbroom_config, spawn_map).chain())
         .run();
 }
@@ -61,9 +63,11 @@ impl Suzanne {
         };
         let suzanne = asset_server.load(format!("{SUZANNE_MODEL}#Scene0"));
 
-        world
-            .commands()
-            .entity(entity)
-            .insert((SceneRoot(suzanne), TrenchBroomGltfRotationFix));
+        world.commands().entity(entity).insert((
+            SceneRoot(suzanne),
+            TrenchBroomGltfRotationFix,
+            RigidBody::Dynamic,
+            ColliderConstructorHierarchy::new(ColliderConstructor::ConvexDecompositionFromMesh),
+        ));
     }
 }
