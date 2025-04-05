@@ -45,17 +45,6 @@ fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
 #[derive(PointClass, Component, Reflect)]
 #[reflect(Component)]
 #[require(Transform, Visibility)]
-#[model({ "path": model, "skin": skin })]
-pub struct Suzanne {
-    model: String,
-    skin: u32,
-}
-
-impl Default for Suzanne {
-    fn default() -> Self {
-        Self {
-            model: "models/Suzanne.gltf".to_string(),
-            skin: 0,
-        }
-    }
-}
+// #[require(TrenchBroomGltfRotationFix(|| TrenchBroomGltfRotationFix))]
+#[model({ "path": "models/Suzanne.gltf", "skin": 0 })]
+pub struct Suzanne;

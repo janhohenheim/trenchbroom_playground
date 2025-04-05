@@ -18,6 +18,7 @@
 // entity 1
 {
 "classname" "suzanne"
-"origin" "8 -8 72"
+"origin" "-8 -24 72"
 "model" "models/Suzanne.gltf"
+"visibility" "Inherited"
 }
