@@ -4,7 +4,7 @@ use bevy::{
     input::common_conditions::input_just_pressed,
     prelude::*,
 };
-use bevy_trenchbroom::prelude::*;
+use bevy_trenchbroom::{class::QuakeClass, prelude::*};
 
 #[cfg(debug_assertions)]
 mod dev;
@@ -55,8 +55,6 @@ fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
 #[geometry(GeometryProvider::new().convex_collider().smooth_by_default_angle())]
 pub struct Worldspawn;
 
-const SUZANNE_MODEL: &str = "models/Suzanne.gltf";
-
 #[derive(PointClass, Component, Reflect)]
 #[reflect(Component)]
 #[require(Transform, Visibility)]
@@ -70,7 +68,8 @@ impl Suzanne {
             return;
         };
 
-        let suzanne = asset_server.load(format!("{SUZANNE_MODEL}#Scene0"));
+        let model = Suzanne::CLASS_INFO.model.unwrap().trim_matches('"');
+        let suzanne = asset_server.load(format!("{model}#Scene0"));
 
         world.commands().entity(entity).insert((
             SceneRoot(suzanne),
