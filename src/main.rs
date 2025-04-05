@@ -4,12 +4,14 @@ use bevy::{
     input::common_conditions::input_just_pressed,
     prelude::*,
 };
-use bevy_trenchbroom::{bsp::base_classes::BspWorldspawn, class::QuakeClass, prelude::*};
+use bevy_trenchbroom::{bsp::base_classes::BspWorldspawn, prelude::*};
 
 #[cfg(debug_assertions)]
 mod dev;
 #[cfg(debug_assertions)]
 use dev::PrintComponents;
+use utils::LoadTrenchbroomModel;
+mod utils;
 
 fn main() {
     let mut app = App::new();
@@ -19,6 +21,7 @@ fn main() {
             "trenchbroom_playground",
         )))
         .add_plugins(PhysicsPlugins::default())
+        .add_plugins(utils::plugin)
         .add_systems(Startup, spawn_map);
 
     #[cfg(debug_assertions)]
@@ -71,8 +74,7 @@ impl Suzanne {
             return;
         };
 
-        let model = Suzanne::CLASS_INFO.model.unwrap().trim_matches('"');
-        let suzanne = asset_server.load(format!("{model}#Scene0"));
+        let suzanne = asset_server.load_trenchbroom_model::<Self>();
 
         world.commands().entity(entity).insert((
             SceneRoot(suzanne),
