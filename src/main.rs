@@ -22,7 +22,7 @@ fn main() {
         )))
         .add_plugins(PhysicsPlugins::default())
         .add_plugins(utils::plugin)
-        .add_systems(Startup, spawn_map);
+        .add_systems(Startup, (write_trenchbroom_config, spawn_map));
 
     #[cfg(debug_assertions)]
     {
@@ -34,6 +34,12 @@ fn main() {
     }
 
     app.run();
+}
+
+fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
+    if let Err(err) = server.config.write_to_default_folder() {
+        error!("Could not write TrenchBroom config: {err}");
+    }
 }
 
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
