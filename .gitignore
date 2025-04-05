@@ -5,3 +5,8 @@
 
 # ignore all files like *.<some number>.map
 assets/**/autosave/
+
+assets/**/*.bsp
+assets/**/*.log
+assets/**/*.pts
+assets/**/*.texinfo.json
