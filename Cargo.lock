@@ -1200,8 +1200,7 @@ dependencies = [
 [[package]]
 name = "bevy_trenchbroom"
 version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "626fb4b9f584abe91fd5af018214b5b87d8a335f992a5feec2a2b912c83c3fd0"
+source = "git+https://github.com/Noxmore/bevy_trenchbroom?rev=7bdfe66dbcccfc93f82a786543a9f36decaeb3b8#7bdfe66dbcccfc93f82a786543a9f36decaeb3b8"
 dependencies = [
  "anyhow",
  "avian3d",
@@ -1231,8 +1230,7 @@ dependencies = [
 [[package]]
 name = "bevy_trenchbroom_macros"
 version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8de529df5f174d541f12cc81bfac0f3161373817f26fbd1feef422baa982d4b4"
+source = "git+https://github.com/Noxmore/bevy_trenchbroom?rev=7bdfe66dbcccfc93f82a786543a9f36decaeb3b8#7bdfe66dbcccfc93f82a786543a9f36decaeb3b8"
 dependencies = [
  "heck",
  "proc-macro2",

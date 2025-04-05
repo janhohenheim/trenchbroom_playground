@@ -5,13 +5,11 @@ use bevy::{
     prelude::*,
 };
 use bevy_trenchbroom::prelude::*;
-use fix_rotation::FixTrenchBroomRotation;
 
 #[cfg(debug_assertions)]
 mod dev;
 #[cfg(debug_assertions)]
 use dev::PrintComponents;
-mod fix_rotation;
 
 fn main() {
     let mut app = App::new();
@@ -21,7 +19,6 @@ fn main() {
             "trenchbroom_playground",
         )))
         .add_plugins(PhysicsPlugins::default())
-        .add_plugins(fix_rotation::plugin)
         .add_systems(Startup, spawn_map);
 
     #[cfg(debug_assertions)]
@@ -62,7 +59,7 @@ const SUZANNE_MODEL: &str = "models/Suzanne.gltf";
 
 #[derive(PointClass, Component, Reflect)]
 #[reflect(Component)]
-#[require(Transform, Visibility, FixTrenchBroomRotation)]
+#[require(Transform, Visibility)]
 #[model("models/Suzanne.gltf")]
 #[component(on_add = Self::on_add)]
 pub struct Suzanne;
@@ -79,6 +76,7 @@ impl Suzanne {
             SceneRoot(suzanne),
             RigidBody::Dynamic,
             ColliderConstructorHierarchy::new(ColliderConstructor::ConvexDecompositionFromMesh),
+            TrenchBroomGltfRotationFix,
         ));
     }
 }
