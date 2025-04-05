@@ -7,9 +7,10 @@ fn main() {
         .add_plugins(TrenchBroomPlugin(TrenchBroomConfig::new(
             "trenchbroom_playground",
         )))
-        .add_systems(Startup, spawn_map)
+        .add_systems(Startup, (write_trenchbroom_config, spawn_map).chain())
         .run();
 }
+
 fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SceneRoot(asset_server.load("maps/playground.map#Scene")));
 
@@ -31,3 +32,30 @@ fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
 #[reflect(Component)]
 #[geometry(GeometryProvider::new().convex_collider().smooth_by_default_angle())]
 pub struct Worldspawn;
+
+fn write_trenchbroom_config(server: Res<TrenchBroomServer>) {
+    if let Err(err) = server
+        .config
+        .write_folder("../../.TrenchBroom/games/trenchbroom_playground")
+    {
+        error!("Could not write TrenchBroom config: {err}");
+    }
+}
+
+#[derive(PointClass, Component, Reflect)]
+#[reflect(Component)]
+#[require(Transform, Visibility)]
+#[model({ "path": model, "skin": skin })]
+pub struct Suzanne {
+    model: String,
+    skin: u32,
+}
+
+impl Default for Suzanne {
+    fn default() -> Self {
+        Self {
+            model: "models/Suzanne.gltf".to_string(),
+            skin: 0,
+        }
+    }
+}

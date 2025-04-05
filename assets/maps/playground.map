@@ -15,3 +15,9 @@
 ( 64 64 16 ) ( 64 64 17 ) ( 64 65 16 ) wood [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
+// entity 1
+{
+"classname" "suzanne"
+"origin" "8 -8 72"
+"model" "models/Suzanne.gltf"
+}
