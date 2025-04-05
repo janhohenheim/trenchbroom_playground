@@ -10,27 +10,21 @@ fn main() {
         .add_systems(Startup, spawn_map)
         .run();
 }
-fn spawn_map(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn spawn_map(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SceneRoot(asset_server.load("maps/playground.map#Scene")));
 
     commands.spawn((
         Camera3d::default(),
-        Transform::from_xyz(0.0, 10.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
+        Transform::from_xyz(0.0, 5.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
     ));
 
     commands.spawn((
-        Mesh3d(meshes.add(Cuboid::from_size(Vec3::ONE))),
-        MeshMaterial3d(materials.add(Color::WHITE)),
+        DirectionalLight {
+            shadows_enabled: true,
+            ..default()
+        },
+        Transform::default().looking_to(Vec3::new(1.0, -10.0, 0.0), Vec3::Y),
     ));
-    commands.spawn((DirectionalLight {
-        shadows_enabled: true,
-        ..default()
-    },));
 }
 
 #[derive(SolidClass, Component, Reflect, Default)]
