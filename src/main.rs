@@ -92,8 +92,16 @@ impl Suzanne {
     }
 }
 
-fn print_suzanne_components(mut commands: Commands, q_suzanne: Query<Entity, With<Suzanne>>) {
+fn print_suzanne_components(
+    mut commands: Commands,
+    q_suzanne: Query<Entity, With<Suzanne>>,
+    asset_loader: Res<AssetServer>,
+) {
     for entity in q_suzanne.iter() {
-        commands.trigger_targets(PrintComponents, entity);
+        //commands.trigger_targets(PrintComponents, entity);
     }
+    let a: Handle<Image> =
+        asset_loader.load("textures/rock_wall_13_diff_1k/rock_wall_13_disp_1k.png");
+    let loaded = asset_loader.get_load_state(&a);
+    println!("loaded: {:?}", loaded);
 }
