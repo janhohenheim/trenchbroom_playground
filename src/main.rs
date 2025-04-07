@@ -19,13 +19,10 @@ fn main() {
     app.add_plugins(DefaultPlugins)
         .add_plugins(TrenchBroomPlugin(
             TrenchBroomConfig::new("trenchbroom_playground").texture_exclusions(
-                [
-                    "**/*_disp_*.png",
-                    "**/*_arm_*.png",
-                    "**/*_nor_*.png",
-                    "**/*_disp_*.png",
-                ]
-                .map(String::from),
+                ["*_disp_*", "*_arm_*", "*_nor_*"]
+                    .into_iter()
+                    .map(String::from)
+                    .collect::<Vec<_>>(),
             ),
         ))
         .add_plugins(PhysicsPlugins::default())
