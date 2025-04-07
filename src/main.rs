@@ -17,9 +17,19 @@ fn main() {
     let mut app = App::new();
 
     app.add_plugins(DefaultPlugins)
-        .add_plugins(TrenchBroomPlugin(TrenchBroomConfig::new(
-            "trenchbroom_playground",
-        )))
+        .add_plugins(TrenchBroomPlugin(
+            TrenchBroomConfig::new("trenchbroom_playground").texture_exclusions(
+                [
+                    "**/*_disp_*.png",
+                    "**/*_arm_*.png",
+                    "**/*_nor_*.png",
+                    "**/*_disp_*.png",
+                ]
+                .into_iter()
+                .map(String::from)
+                .collect::<Vec<_>>(),
+            ),
+        ))
         .add_plugins(PhysicsPlugins::default())
         .add_plugins(utils::plugin)
         .add_systems(Startup, (write_trenchbroom_config, spawn_map));
@@ -92,16 +102,8 @@ impl Suzanne {
     }
 }
 
-fn print_suzanne_components(
-    mut commands: Commands,
-    q_suzanne: Query<Entity, With<Suzanne>>,
-    asset_loader: Res<AssetServer>,
-) {
+fn print_suzanne_components(mut commands: Commands, q_suzanne: Query<Entity, With<Suzanne>>) {
     for entity in q_suzanne.iter() {
-        //commands.trigger_targets(PrintComponents, entity);
+        commands.trigger_targets(PrintComponents, entity);
     }
-    let a: Handle<Image> =
-        asset_loader.load("textures/rock_wall_13_diff_1k/rock_wall_13_disp_1k.png");
-    let loaded = asset_loader.get_load_state(&a);
-    println!("loaded: {:?}", loaded);
 }
