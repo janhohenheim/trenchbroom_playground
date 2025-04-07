@@ -25,9 +25,7 @@ fn main() {
                     "**/*_nor_*.png",
                     "**/*_disp_*.png",
                 ]
-                .into_iter()
-                .map(String::from)
-                .collect::<Vec<_>>(),
+                .map(String::from),
             ),
         ))
         .add_plugins(PhysicsPlugins::default())
